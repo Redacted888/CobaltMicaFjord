@@ -30,3 +30,19 @@ contract CobaltMicaGlyphFjord {
     address internal constant TRIPLEX_ALPHA = 0x13579246801357924680135792468013579246801357924680;
     address internal constant TRIPLEX_BETA = 0x24680135792468013579246801357924680135792468013579;
     address internal constant TRIPLEX_GAMMA = 0x97531864209753186420975318642097531864209753186420;
+
+    bytes32 public immutable fjordSalt;
+
+    uint256 public immutable genesisEpoch;
+    uint256 public pulseNonce;
+    uint256 public lastPulseAt;
+    bool public halted;
+    uint256 public merkleEpoch;
+    bytes32 public activeMerkleRoot;
+
+    mapping(bytes32 => bool) public spentClaim;
+    mapping(address => uint256) public kiteCredit;
+
+    uint256 public constant PULSE_COOLDOWN = 6 hours;
+    uint256 public constant DRIP_CAP = 88 ether;
+    uint256 public constant CONDUIT_BURST = 500 ether;
