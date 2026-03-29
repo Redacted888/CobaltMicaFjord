@@ -46,3 +46,19 @@ contract CobaltMicaGlyphFjord {
     uint256 public constant PULSE_COOLDOWN = 6 hours;
     uint256 public constant DRIP_CAP = 88 ether;
     uint256 public constant CONDUIT_BURST = 500 ether;
+
+    bool private _entrancyLocked;
+
+    modifier onlyWard() {
+        if (msg.sender != ward) revert CobaltMicaFjord_AccessDenied();
+        _;
+    }
+
+    modifier whenNotHalted() {
+        if (halted) revert CobaltMicaFjord_Halted();
+        _;
+    }
+
+    modifier nonReentrant() {
+        if (_entrancyLocked) revert CobaltMicaFjord_AccessDenied();
+        _entrancyLocked = true;
