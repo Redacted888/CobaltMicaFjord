@@ -62,3 +62,19 @@ contract CobaltMicaGlyphFjord {
     modifier nonReentrant() {
         if (_entrancyLocked) revert CobaltMicaFjord_AccessDenied();
         _entrancyLocked = true;
+        _;
+        _entrancyLocked = false;
+    }
+
+    constructor(address ward_, address conduit_) {
+        if (ward_ == address(0) || conduit_ == address(0)) revert CobaltMicaFjord_AccessDenied();
+        ward = ward_;
+        conduit = conduit_;
+        genesisEpoch = block.timestamp;
+        fjordSalt = keccak256(abi.encodePacked("cobalt-mica-fjord", block.chainid, ward_, conduit_));
+    }
+
+    receive() external payable whenNotHalted {
+        emit CobaltMicaFjord_Deposit(msg.sender, msg.value, bytes32(0));
+    }
+
